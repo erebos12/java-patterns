@@ -2,20 +2,20 @@ package thread;
 
 import java.util.Vector;
 
-import util.logging.StaticLogger;
+import util.logging.Logger;
 
 
 public class ThreadManager {
 
     private Vector<LoopingThread> threadPool;
     private long threadSleepInterval = 100;
-    private String className = getClass().getName();
+    private String CN = getClass().getName();
 
     // TODO: Logging and threadSleppInterval to constructor
     public ThreadManager ()
     {
         threadPool = new Vector<LoopingThread>();
-        System.out.println("ThreadManager constructed.");
+        Logger.ctx.log(CN, "constructor", Logger.LogLevel.INFO, "ThreadManager constructed.");
     }
     
     public void constructGenericThreadPool(int threadPoolSize, Thread callingThread)
@@ -32,7 +32,8 @@ public class ThreadManager {
 
     public void addThread (LoopingThread thread)
     {
-    	System.out.println("added thread " + thread.getName());
+    	String MN = "addThread()";
+    	Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "added thread " + thread.getName());
         threadPool.add(thread);
     }
 
@@ -45,19 +46,19 @@ public class ThreadManager {
             try
             {
             	String errMsg = "No free thread available. Waiting for " + threadSleepInterval + " msecs.";
-            	StaticLogger.logger.log(className, MN, StaticLogger.LogLevel.ERROR, errMsg);              	
+            	Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, errMsg);              	
                 Thread.sleep(threadSleepInterval);
             }
             catch (InterruptedException ex)
             {
                 // use className variable here
-				StaticLogger.logger.log(className, MN, StaticLogger.LogLevel.ERROR, ex.toString());            	
+				Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, ex.toString());            	
             }
         }
         freeThread = getFreeThread();
         if (freeThread != null)
         {
-			StaticLogger.logger.log(className, MN, StaticLogger.LogLevel.ERROR,
+			Logger.ctx.log(CN, MN, Logger.LogLevel.INFO,
 					"Fetching free thread out of pool " + freeThread.getName());           	
             freeThread.setTask(runTask);           
         }

@@ -32,7 +32,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import string.StringUtils;
-import util.logging.StaticLogger;
+import util.logging.Logger;
 
 
 /**
@@ -56,14 +56,14 @@ public abstract class BaseDaemon implements Runnable {
         String MN = "BaseDaemon(): ";
         this.CN = className;
 
-        String errMsg = "Successfully configured logging facilities...";
-        StaticLogger.logger.log(className, MN, StaticLogger.LogLevel.INFO, errMsg);             
+        String msg = "Successfully configured logging facilities...";
+        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, msg);             
         
         runFile = createRunFile(runFileName);
         if (runFile == null)
         {
-        	errMsg = "Error while creating runFile!";
-        	StaticLogger.logger.log(className, MN, StaticLogger.LogLevel.ERROR, errMsg);              
+        	msg = "Error while creating runFile!";
+        	Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, msg);              
             System.exit(1);
         }
         myThread = new Thread(this);
@@ -88,15 +88,15 @@ public abstract class BaseDaemon implements Runnable {
     public final void run ()
     {
         String MN = "run()";
-        StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "initialize...");
+        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "initialize...");
         initialize();
 
-        StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "start...");
+        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "start...");
         start();
        
         runDaemonLoop();
         
-        StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "stop...");
+        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "stop...");
         stop();
     }
     
@@ -111,7 +111,7 @@ public abstract class BaseDaemon implements Runnable {
         catch (UnknownHostException e)
         {
         	String errMsg = "Could not acquire hostname for localhost: " + e.toString();
-        	StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.ERROR, errMsg);                
+        	Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, errMsg);                
         }
         return hostname;
     }
@@ -119,7 +119,7 @@ public abstract class BaseDaemon implements Runnable {
     private void runDaemonLoop ()
     {
         String MN = "runDaemonLoop(): ";
-        StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "enter...");       
+        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "enter...");       
         while (runFile.exists())
         {          
             writeTimestamp(new Date());         
@@ -129,7 +129,7 @@ public abstract class BaseDaemon implements Runnable {
             }
             catch (InterruptedException e)
             {
-            	StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.ERROR, e.toString());
+            	Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, e.toString());
             }
         }
     }
@@ -138,7 +138,7 @@ public abstract class BaseDaemon implements Runnable {
     {     
         String MN = "createRunFile(): ";
         String msg = "creating runfile with name: " + runFileName;
-        StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, msg);
+        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, msg);
         String path = getHomeSysVar();
         if (path == null)
         {
@@ -152,11 +152,11 @@ public abstract class BaseDaemon implements Runnable {
         catch (IOException e)
         {
             msg = "Could not create runfile: " + e.toString();
-            StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.ERROR, msg);
+            Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, msg);
             return null;
         }
         msg = "Created runfile " + runFile.getName() + " successfully.";
-        StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, msg);
+        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, msg);
         return runFile;
     }
     
@@ -167,7 +167,7 @@ public abstract class BaseDaemon implements Runnable {
         if (StringUtils.isStringNullOrEmpty(path))
         {
 			String msg = "Error while acquiring system variable user.home. Mandatory for path location of runfile.";
-			StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.ERROR, msg);
+			Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, msg);
 			return null;
         }
         return path;
@@ -184,7 +184,7 @@ public abstract class BaseDaemon implements Runnable {
         catch (IOException e)
         {
         	String msg = "Error while writing timestamp to runFile: " + e.toString();
-        	StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.ERROR, msg);                   
+        	Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, msg);                   
         }        
     }
 }

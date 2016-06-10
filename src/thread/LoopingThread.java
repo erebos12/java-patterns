@@ -1,7 +1,7 @@
 
 package thread;
 
-import util.logging.StaticLogger;
+import util.logging.Logger;
 
 public abstract class LoopingThread extends BaseThread {
    
@@ -50,7 +50,7 @@ public abstract class LoopingThread extends BaseThread {
     public void shutdownThread ()
     {
     	String MN = "shutdownThread()";
-    	StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "Shutting down thread " + getName());
+    	Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "Shutting down thread " + getName());
         releaseResources();        
         unregisterLogging();
         threadIsActive = false;

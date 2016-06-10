@@ -8,7 +8,7 @@ public class LoggingContext {
 		this.strategy = strategy;
 	}
 
-	public void log(String CN, String MN, StaticLogger.LogLevel logLevel, String logMessage) 
+	public void log(String CN, String MN, Logger.LogLevel logLevel, String logMessage) 
 	{
 		strategy.log(CN, MN, logLevel, logMessage);
 	}

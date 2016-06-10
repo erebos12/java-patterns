@@ -1,7 +1,7 @@
 
 package thread;
 
-import util.logging.StaticLogger;
+import util.logging.Logger;
 
 public class PlainThread extends BaseThread {
 
@@ -22,24 +22,24 @@ public class PlainThread extends BaseThread {
     public void run ()
     {
         String MN = "run(): ";
-        StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "enter...");
+        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "enter...");
 
         try
         {
             if (worker != null)
             {
-            	StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "calling actual worker...");
+            	Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "calling actual worker...");
                 worker.run();
             }
         }
         catch (Throwable t)
         {
-        	StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.ERROR, t.toString());
+        	Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, t.toString());
         }
         finally
         {
             
         }
-        StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "exit");
+        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "exit");
     }
 }

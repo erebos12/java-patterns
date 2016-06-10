@@ -1,7 +1,7 @@
 
 package thread;
 
-import util.logging.StaticLogger;
+import util.logging.Logger;
 
 /**
  * This class manages creation of threads in the current JVM process of the 
@@ -38,20 +38,20 @@ public class ThreadFactory {
                 loggingHeadThread = Thread.currentThread();
             }
             
-            StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO,
+            Logger.ctx.log(CN, MN, Logger.LogLevel.INFO,
                        "creating new thread with name " + threadName + "...");
             Thread t = new PlainThread(threadName, runnable, loggingHeadThread);
             
-            StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO,
+            Logger.ctx.log(CN, MN, Logger.LogLevel.INFO,
                        threadName + "...");
             t.start();
             
-            StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "exit");
+            Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "exit");
             return t;
         }
         catch (Exception e)
         {
-        	StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.ERROR, e.toString());
+        	Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, e.toString());
             throw e;
         }
     }

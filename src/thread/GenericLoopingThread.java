@@ -1,7 +1,7 @@
 
 package thread;
 
-import util.logging.StaticLogger;
+import util.logging.Logger;
 
 public class GenericLoopingThread extends LoopingThread {
 
@@ -16,16 +16,16 @@ public class GenericLoopingThread extends LoopingThread {
     public void run ()
     {
     	String MN = "run()";
-		StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "Thread is waiting for incoming task...");
+		Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "Thread is waiting for incoming task...");
         while (isThreadIsActive())
         {
             if (getTask() != null)
             {            	
-            	StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "Start running task...");
+            	Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "Start running task...");
                 Runnable task = getTask();
                 task.run();
                 String msg = "Task done. Thread goes to sleep for next icoming task...";
-                StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, msg);                
+                Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, msg);                
                 resetTask();
             }
             try
