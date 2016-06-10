@@ -1,12 +1,12 @@
 
 package thread;
 
+import util.logging.StaticLogger;
 
 public class PlainThread extends BaseThread {
 
-    private static final String className = BaseThread.class.getName();
-    private Runnable worker = null;
-    private Thread loggingHeadThread = null;
+    private static final String CN = BaseThread.class.getName();
+    private Runnable worker = null;    
 
     public PlainThread (String name, Runnable worker,
                         Thread loggingHeadThread)
@@ -21,25 +21,25 @@ public class PlainThread extends BaseThread {
      */
     public void run ()
     {
-        String mn = "run(): ";
-        System.out.println(mn + "enter");
+        String MN = "run(): ";
+        StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "enter...");
 
         try
         {
             if (worker != null)
             {
-            	System.out.println("calling actual worker...");
+            	StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "calling actual worker...");
                 worker.run();
             }
         }
         catch (Throwable t)
         {
-        	System.out.println(mn + t);
+        	StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.ERROR, t.toString());
         }
         finally
         {
             
         }
-        System.out.println(mn + "exit");
+        StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "exit");
     }
 }

@@ -1,13 +1,15 @@
 
 package thread;
 
+import util.logging.StaticLogger;
+
 /**
  * This class manages creation of threads in the current JVM process of the 
  * application.
  */
 public class ThreadFactory {
     
-    private static final String className  = ThreadFactory.class.getName();
+    private static final String CN  = ThreadFactory.class.getName();
     
     
     /**
@@ -27,7 +29,7 @@ public class ThreadFactory {
     public static Thread startThread(String threadName, Runnable runnable, 
                                      Thread loggingHeadThread) throws Exception
     {
-        String mn = "startThread(): ";
+        String MN = "startThread(): ";
         
         try
         {
@@ -36,20 +38,20 @@ public class ThreadFactory {
                 loggingHeadThread = Thread.currentThread();
             }
             
-            System.out.println(mn + 
+            StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO,
                        "creating new thread with name " + threadName + "...");
             Thread t = new PlainThread(threadName, runnable, loggingHeadThread);
             
-            System.out.println( mn + "starting thread " + 
+            StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO,
                        threadName + "...");
             t.start();
             
-            System.out.println(mn + "exit");
+            StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "exit");
             return t;
         }
         catch (Exception e)
         {
-        	System.out.println(mn + "caught " + e);
+        	StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.ERROR, e.toString());
             throw e;
         }
     }

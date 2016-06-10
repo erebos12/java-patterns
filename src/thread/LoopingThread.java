@@ -1,12 +1,13 @@
 
 package thread;
 
+import util.logging.StaticLogger;
 
 public abstract class LoopingThread extends BaseThread {
    
     private Runnable task = null;
     private boolean threadIsActive = true;
-    private static final String className = LoopingThread.class.getName();
+    private static final String CN = LoopingThread.class.getName();
        
     public LoopingThread (String name, Thread loggingHeadThread)
     {
@@ -48,7 +49,8 @@ public abstract class LoopingThread extends BaseThread {
     
     public void shutdownThread ()
     {
-    	System.out.println("Shutting down thread " + getName());
+    	String MN = "shutdownThread()";
+    	StaticLogger.logger.log(CN, MN, StaticLogger.LogLevel.INFO, "Shutting down thread " + getName());
         releaseResources();        
         unregisterLogging();
         threadIsActive = false;
