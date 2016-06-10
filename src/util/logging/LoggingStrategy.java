@@ -12,7 +12,7 @@ public interface LoggingStrategy {
 	 */
 	public void log(String loggingClassName, 
 			        String loggingMethodName, 
-			        int logLevel, 
+			        StaticLogger.LogLevel logLevel, 
 			        String logMessage);
 
 }

@@ -45,19 +45,20 @@ public class ThreadManager {
             try
             {
             	String errMsg = "No free thread available. Waiting for " + threadSleepInterval + " msecs.";
-            	StaticLogger.logger.log(className, MN, 1, errMsg);              	
+            	StaticLogger.logger.log(className, MN, StaticLogger.LogLevel.ERROR, errMsg);              	
                 Thread.sleep(threadSleepInterval);
             }
             catch (InterruptedException ex)
             {
                 // use className variable here
-            	StaticLogger.logger.log(className, MN, 1, ex.toString());            	
+				StaticLogger.logger.log(className, MN, StaticLogger.LogLevel.ERROR, ex.toString());            	
             }
         }
         freeThread = getFreeThread();
         if (freeThread != null)
         {
-        	StaticLogger.logger.log(className, MN, 1, "Fetching free thread out of pool " + freeThread.getName());           	
+			StaticLogger.logger.log(className, MN, StaticLogger.LogLevel.ERROR,
+					"Fetching free thread out of pool " + freeThread.getName());           	
             freeThread.setTask(runTask);           
         }
     }

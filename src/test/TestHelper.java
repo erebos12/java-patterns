@@ -51,7 +51,7 @@ public class TestHelper extends TestCase {
     public static void failTestWithErrorMsg (String failingClassName, String failingMethodName, String errMsg)
     {
         String msg = "TEST-FAILED: " + failingClassName + "." + failingMethodName + "() - " + errMsg;
-        StaticLogger.logger.log(failingClassName, failingMethodName, 1, errMsg);        
+        StaticLogger.logger.log(failingClassName, failingMethodName, StaticLogger.LogLevel.ERROR, errMsg);        
         fail(msg);
     }
 
