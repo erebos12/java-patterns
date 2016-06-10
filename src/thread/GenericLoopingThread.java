@@ -34,7 +34,7 @@ public class GenericLoopingThread extends LoopingThread {
             }
             catch (InterruptedException e)
             {
-            	System.out.println("Thread interrupted.");
+            	Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, e.toString());            	
             }
         }
 

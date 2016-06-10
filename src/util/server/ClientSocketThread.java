@@ -8,6 +8,8 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import util.logging.Logger;
+
 public abstract class ClientSocketThread implements Runnable {
 
 	protected InputStream inputStream = null;
@@ -18,12 +20,12 @@ public abstract class ClientSocketThread implements Runnable {
 	private String className = ClientSocketThread.class.getName();
 
 	public ClientSocketThread() {	    
-		logMessage("", "ClientSocketThread constructed.");
+		logMessage("constructor", Logger.LogLevel.INFO, "ClientSocketThread constructed.");
 	}
 
-	private void logMessage(String method, String msg)
+	private void logMessage(String method, Logger.LogLevel logLevel, String msg)
 	{
-		System.out.println(className + " - " + method + " " + msg);
+		Logger.ctx.log(className, method, logLevel, msg);		
 	}
 	public void setSocket(Socket socket) {
 		this.socket = socket;
@@ -36,7 +38,7 @@ public abstract class ClientSocketThread implements Runnable {
 			inputStream = socket.getInputStream();
 			inputBuffer = new BufferedReader(new InputStreamReader(
 					socket.getInputStream()));						
-			logMessage("ClientSocketThread - run() ", "Receive incoming data...");
+			logMessage("run()", Logger.LogLevel.INFO, "Receive incoming data...");
 			outputWriter = new PrintWriter(outputStream);
 			handleIncomingData();
 		} catch (IOException e) {

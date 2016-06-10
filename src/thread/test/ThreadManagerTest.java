@@ -69,14 +69,10 @@ public class ThreadManagerTest {
         public void run ()
         {
             // this could be an asynchronous task e.g. DB-Request
-            // or whatever
-            // System.out.println(taskName + ": State RUNNING: " +
-            // getCurrentTime());
+            // or whatever           
             state = "RUNNING";
             sleep(taskWaitTime);
             state = "DONE";
-            // System.out.println(taskName + ": State DONE: " +
-            // getCurrentTime());
         }
     }
 
@@ -106,9 +102,7 @@ public class ThreadManagerTest {
             {
                 return false;
             }
-        }
-        /*System.out.println("Changed state to " + nextSateToChange + " in "
-            + milsec + " msec");*/
+        }       
         return true;
     }
     private boolean pollForChangeState (NewLoopingThread thread,
@@ -124,9 +118,7 @@ public class ThreadManagerTest {
             {
                 return false;
             }
-        }
-        /*System.out.println("Changed state to " + nextSateToChange + " in "
-            + milsec + " msec");*/
+        }      
         return true;
     }
 

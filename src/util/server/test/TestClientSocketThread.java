@@ -3,32 +3,36 @@ package util.server.test;
 
 import java.io.IOException;
 
+import test.TestHelper;
 import util.server.ClientSocketThread;
 
 public class TestClientSocketThread extends ClientSocketThread {
 
     private String message = null;
+    private String CN = TestClientSocketThread.class.getName();
 
     @Override
     public void handleIncomingData ()
     {
+    	String MN = "handleIncomingData()";
         try
         {
             message = inputBuffer.readLine();
             if (message.startsWith("REQUEST"))
-            {
-                // System.out.println("SUCCESS: received message: " + message);
+            {                
                 outputWriter.write("RESPONSE\n");
                 outputWriter.flush();
             }
             else
             {
-                System.out.println("ERROR: received invalid message: " + message);
+            	String errMsg = "ERROR: received invalid message: " + message;
+            	TestHelper.failTestWithErrorMsg(CN, MN, errMsg); 
             }
         }
         catch (IOException e)
-        {
-            System.out.println("ERROR: Could NOT read message: " + e.toString());
+        {        	
+        	String errMsg = "ERROR: Could NOT read message: " + e.toString();
+        	TestHelper.failTestWithErrorMsg(CN, MN, errMsg);            
         }
     }
 }

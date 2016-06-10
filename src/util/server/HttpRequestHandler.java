@@ -38,9 +38,13 @@ package util.server;
 
 import java.io.IOException;
 
+import util.logging.Logger;
+import util.server.test.SimpleServerTest;
+
 public class HttpRequestHandler extends ClientSocketThread {
 
     public static String httpMessage = "";
+    private String CN = HttpRequestHandler.class.getSimpleName();
 
     @Override
     public void handleIncomingData ()
@@ -50,6 +54,7 @@ public class HttpRequestHandler extends ClientSocketThread {
 
     public String getHTTPMessage ()
     {
+    	String MN = "getHTTPMessage()";
         String message = "";
         try
         {
@@ -90,7 +95,9 @@ public class HttpRequestHandler extends ClientSocketThread {
         }
         catch (IOException e)
         {
-            System.out.println("ERROR: Could NOT read message: " + e.toString());
+        	String errMsg = "ERROR: Could NOT read message: " + e.toString();
+        	Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, errMsg);
+            
         }
         return message;
     }
