@@ -14,7 +14,7 @@ import junit.framework.TestCase;
  *  THAT'S IT!!!
  *
  */
-public class DaemonDemo extends TestCase {    
+public class DaemonTest extends TestCase {    
 
     public class WorkerClass {
         /* 
@@ -35,22 +35,6 @@ public class DaemonDemo extends TestCase {
             super(DaemonXY.class.getName(), logFileName, runFileName);
         }
 
-        // ATTENTION: DON'T FORGET THE MAIN METHOD. A REAL DAEMON MUST HAVE A MAIN-METHOD!
-        // SHOULD BE STATIC !!!! Here for testing just a non-static method.
-        public void main (String[] args)
-        {
-            // Read args of main method here. Here default values will defined by local variables 
-            String LOG_FILE_NAME_PREFIX = "daemonXY";
-            String runFileName = "daemonXY_localhost_8080.run";
-            
-            DaemonXY daemonXY = new DaemonXY(LOG_FILE_NAME_PREFIX, runFileName);      
-            //Optional: Setting another runtimeIntervalInMsec e.g. 1000 or 3000
-            //  Default is 500 ms in case you don't call the setter
-            daemonXY.setRunFileIntervalInMsec(1000);
-            // NOW START THE DAEMON
-            daemonXY.startMeAsDaemon();
-        }
-        
         @Override
         public void initialize ()
         {
@@ -69,5 +53,22 @@ public class DaemonDemo extends TestCase {
             worker.stopWork();
         } 
     }   
+    // ATTENTION: DON'T FORGET THE MAIN METHOD. A REAL DAEMON MUST HAVE A MAIN-METHOD!
+    // SHOULD BE STATIC !!!! Here for testing just a non-static method.
+    // This would be the static main method
+    public void testDaemon()
+    {
+    	//0. Mandatory: Read args of main method here. Here default values will defined by local variables 
+    	//   You could read them from console or config file as config parameters
+        String LOG_FILE_NAME_PREFIX = "daemonXY";
+        String runFileName = "daemonXY_localhost_8080.run";
+        //1. Mandatory: Construct the daemon
+        DaemonXY daemonXY = new DaemonXY(LOG_FILE_NAME_PREFIX, runFileName);      
+        //2. Optional: Setting another runtimeIntervalInMsec e.g. 1000 or 3000
+        //   Default is 500 ms in case you don't call this setter
+        daemonXY.setRunFileIntervalInMsec(1000);
+        //3. Mandatory: NOW START THE DAEMON
+        daemonXY.startMeAsDaemon();    	 	
+    }
 }
 

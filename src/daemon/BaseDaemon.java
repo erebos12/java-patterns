@@ -99,22 +99,6 @@ public abstract class BaseDaemon implements Runnable {
         Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "stop...");
         stop();
     }
-    
-    private String getHostname()
-    {
-        String MN = "getHostname(): ";
-        String hostname = "localhost";
-        try
-        {
-            hostname = InetAddress.getLocalHost().getHostName();
-        }
-        catch (UnknownHostException e)
-        {
-        	String errMsg = "Could not acquire hostname for localhost: " + e.toString();
-        	Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, errMsg);                
-        }
-        return hostname;
-    }
 
     private void runDaemonLoop ()
     {
@@ -138,13 +122,8 @@ public abstract class BaseDaemon implements Runnable {
     {     
         String MN = "createRunFile(): ";
         String msg = "creating runfile with name: " + runFileName;
-        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, msg);
-        String path = getHomeSysVar();
-        if (path == null)
-        {
-            return null;
-        }
-        File runFile = new File(path + "/var/run/" + runFileName);
+        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, msg);        
+        File runFile = new File(runFileName);
         try
         {
             runFile.createNewFile();
@@ -158,19 +137,6 @@ public abstract class BaseDaemon implements Runnable {
         msg = "Created runfile " + runFile.getName() + " successfully.";
         Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, msg);
         return runFile;
-    }
-    
-    private String getHomeSysVar ()
-    {
-        String MN = "getHomeSysVar(): ";
-        String path = System.getProperty("user.home");
-        if (StringUtils.isStringNullOrEmpty(path))
-        {
-			String msg = "Error while acquiring system variable user.home. Mandatory for path location of runfile.";
-			Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, msg);
-			return null;
-        }
-        return path;
     }
 
     private void writeTimestamp (Date timestamp)
