@@ -1,38 +1,3 @@
-/*
- * FILE NAME: TestSimpleServer.java
- *
- * DESCRIPTION:
- *
-Source code for class:
- *
- *
-TestSimpleServer.java
- *
- * COPYRIGHT:
- *
-(C) Copyright International Business Machines Corporation 1997, 2011.
- *
-Licensed Material - Property of IBM - All Rights Reserved.
- *
-US Government Users Restricted Rights - Use, duplication, or disclosure
- *
-restricted by GSA ADP Schedule Contract with IBM Corp.
- *
- * CLASSIFICATION:
- *
-IBM Confidential
- *
-OCO Source Materials
- *
- * COMPONENT:
- *
-IBM ADMIRA
- *
- * CHANGES:
- *
- * 21.01.2014 Initial version.
- *
- */
 
 package util.server.test;
 

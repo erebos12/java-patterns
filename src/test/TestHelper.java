@@ -1,25 +1,3 @@
-/*
- * FILE NAME: TestHelper.java
- *
- * DESCRIPTION:
- *
- *   Source code for class TestHelper.java
- *
- * COPYRIGHT:
- *   (C) Copyright International Business Machines Corporation 1997, 2016.
- *   Licensed Material - Property of IBM - All Rights Reserved.
- *
- * CLASSIFICATION:
- *   IBM Confidential
- *
- * COMPONENT:
- *   IBM Archive and Essence Manager / IBM LTFS Storage Manager
- *
- * CHANGES:
- *
- *  $XX 22.01.2016 initial version (alexsahm).
- */
-
 package test;
 
 import java.io.PrintWriter;

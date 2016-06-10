@@ -5,6 +5,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import thread.ThreadManager;
+import util.logging.Logger;
 
 public class SimpleServer implements Runnable {
 
@@ -13,7 +14,7 @@ public class SimpleServer implements Runnable {
     private ServerSocket serverSocket = null;
     private String handlerClassName = null;
     private boolean isActive = false;
-    private String className = SimpleServer.class.getName();
+    private String CN = SimpleServer.class.getName();
     private boolean serverStopped = false;
     private Thread ownThread = null;   
     public enum Status {
@@ -45,7 +46,7 @@ public class SimpleServer implements Runnable {
      */
     public SimpleServer (int port, int threadPoolSize, String handlerClassName) throws IllegalArgumentException
     {
-        logMessage(1, "", "Constructing...");
+        logMessage(Logger.LogLevel.INFO, "", "Constructing...");
         if (port <= 0)
         {
             throw new IllegalArgumentException("Error: Invalid port: " + port);
@@ -75,16 +76,16 @@ public class SimpleServer implements Runnable {
         }
         catch (Exception e)
         {
-            logMessage(1,
+            logMessage(Logger.LogLevel.ERROR,
                        "SimpleServer",
                        "Error while constructing ThreadManager: "
                            + e.toString());
         }       
     }
 
-    private void logMessage (int logLevel, String methodName, String msg)
+    private void logMessage (Logger.LogLevel logLevel, String methodName, String msg)
     {
-        System.out.println(className + logLevel + methodName + " - " + msg);
+    	 Logger.ctx.log(CN, methodName, logLevel, msg);
     }
 
     /**
@@ -94,11 +95,11 @@ public class SimpleServer implements Runnable {
     public void stop () throws Exception
     {
         String MN = "stop()";
-        logMessage(1, MN, "stopping SimpleServer now...");         
+        logMessage(Logger.LogLevel.INFO, MN, "stopping SimpleServer now...");         
         this.closeSocket();
         this.serverStopped = true;
         threadMgr.shutdownAllThreads(); 
-        logMessage(1, MN, "SimpleServer stopped successfully.");  
+        logMessage(Logger.LogLevel.INFO, MN, "SimpleServer stopped successfully.");  
     }
 
     public boolean getIsActive ()
@@ -169,7 +170,7 @@ public class SimpleServer implements Runnable {
             }
             catch (IOException e)
             {
-                logMessage(1, MN, e.toString());
+                logMessage(Logger.LogLevel.ERROR, MN, e.toString());
                 Exception ex = new Exception(e.toString());
                 throw ex;
             }
@@ -187,21 +188,21 @@ public class SimpleServer implements Runnable {
             isActive = true;
             while (!serverStopped)
             {
-                logMessage(1, MN,
+                logMessage(Logger.LogLevel.INFO, MN,
                            "listening on port " + serverSocket.getLocalPort());
                 setStatus(Status.READY_FOR_REQUEST);
                 clientSocket = serverSocket.accept();
                 setStatus(Status.PROCEED_INCOMING_REQUEST);
                 String remoteIp = clientSocket.getInetAddress().getHostAddress();
                 int remotePort = clientSocket.getPort();
-                logMessage(1, MN, "Connection established from "
+                logMessage(Logger.LogLevel.INFO, MN, "Connection established from "
                     + remoteIp + ":" + remotePort);
                 try
                 {
                     ClientSocketThread c = (ClientSocketThread) Class.forName(handlerClassName).newInstance();
                     if (c != null)
                     {
-                        logMessage(1, MN,
+                        logMessage(Logger.LogLevel.INFO, MN,
                                    "Start running thread for " + handlerClassName);
                         c.setSocket(clientSocket);
                         threadMgr.runTask(c);    
@@ -210,7 +211,7 @@ public class SimpleServer implements Runnable {
                 }
                 catch (IllegalAccessException | InstantiationException | ClassNotFoundException e)
                 {
-                    logMessage(1, MN, e.toString());
+                    logMessage(Logger.LogLevel.ERROR, MN, e.toString());
                     Exception ex = new Exception(e.toString());
                     try {
 						throw ex;
@@ -223,13 +224,13 @@ public class SimpleServer implements Runnable {
         }      
         catch (IOException e)
         {
-            logMessage(1, MN, "socket closed");    
+            logMessage(Logger.LogLevel.ERROR, MN, "socket closed");    
         }       
         finally
         {
             setStatus(Status.INACTIVE);   
             isActive = false;
         }
-        logMessage(1, MN, "Shutting down SimpleServer.");
+        logMessage(Logger.LogLevel.INFO, MN, "Shutting down SimpleServer.");
     }
 }
