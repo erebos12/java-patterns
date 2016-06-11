@@ -20,7 +20,7 @@ public class DaemonMain {
 		}
 
 		public void stopWork() {
-			Logger.ctx.log(CN, "startWork", Logger.LogLevel.INFO, "stopping my work here...");
+			Logger.ctx.log(CN, "stopWork", Logger.LogLevel.INFO, "stopping my work here...");
 		}
 	}
 
