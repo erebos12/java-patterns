@@ -29,9 +29,12 @@ import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import string.StringUtils;
+import time.DateTimeUtils;
 import util.logging.Logger;
 
 
@@ -53,7 +56,7 @@ public abstract class BaseDaemon implements Runnable {
     
 	public BaseDaemon(String className, String logFileNamePrefix, String runFileName)
     {
-        String MN = "BaseDaemon(): ";
+        String MN = "constructor";
         this.CN = className;
 
         String msg = "Successfully configured logging facilities...";
@@ -102,11 +105,12 @@ public abstract class BaseDaemon implements Runnable {
 
     private void runDaemonLoop ()
     {
-        String MN = "runDaemonLoop(): ";
-        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "enter...");       
+        String MN = "runDaemonLoop(): ";          
+        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "enter...");        
         while (runFile.exists())
         {          
-            writeTimestamp(new Date());         
+        	Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, runFile.getName() + " exists? " + runFile.exists());
+            writeTimestamp();         
             try
             {
                 Thread.sleep(runFileIntervalInMsec);
@@ -121,7 +125,7 @@ public abstract class BaseDaemon implements Runnable {
     private File createRunFile (String runFileName)
     {     
         String MN = "createRunFile(): ";
-        String msg = "creating runfile with name: " + runFileName;
+        String msg = "Creating runfile with name: " + runFileName + "...";
         Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, msg);        
         File runFile = new File(runFileName);
         try
@@ -139,18 +143,21 @@ public abstract class BaseDaemon implements Runnable {
         return runFile;
     }
 
-    private void writeTimestamp (Date timestamp)
+    private void writeTimestamp ()
     {
-        String MN = "writeTimestamp(): ";
-        String sTimestamp = DateFormat.getDateTimeInstance().format(timestamp);
+        String MN = "writeTimestamp(): ";        
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(runFile)))        
-        {            
-            bufferedWriter.write(sTimestamp);
+        {
+        	//Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, DateTimeUtils.getCurrentDateTimeAsString());
+            //bufferedWriter.write(DateTimeUtils.getCurrentDateTimeAsString());
+        	//bufferedWriter.write("something to write into the runfile");
+        	bufferedWriter.append("something to write into the runfile");
         }
         catch (IOException e)
         {
         	String msg = "Error while writing timestamp to runFile: " + e.toString();
         	Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, msg);                   
-        }        
+        }          
     }
+
 }

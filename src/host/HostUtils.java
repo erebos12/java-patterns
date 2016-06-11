@@ -32,5 +32,4 @@ public class HostUtils {
 		}
 		return path;
 	}
-
 }

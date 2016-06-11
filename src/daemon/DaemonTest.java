@@ -5,10 +5,10 @@ import junit.framework.TestCase;
 /**
  * HOW TO WRITE AN AREMA DAEMON:
  *  The following code shows a sample for an AREMA Daemon. 
- *  1. Write YourAremaDaemonClass which extends the class COM.ibm.dma.admira.util.daemon.AremaDaemon 
+ *  1. Write YourAremaDaemonClass which extends the class COM.ibm.dma.admira.util.daemon.BaseDaemon 
  *  2. Implement the main-Method (static): 
  *    a) Read in in args of main
- *    b) Construct your concrete AremaDaemon - YourAremaDaemonClass
+ *    b) Construct your concrete Daemon - YourDaemonClass
  *  3. Implement your WorkerClass which provides the real functionality (+ JUnit-Test) 
  *  4. Implement the initialize(), start() and stop() methods which calls the WorkClass interfaces
  *  THAT'S IT!!!
@@ -53,9 +53,8 @@ public class DaemonTest extends TestCase {
             worker.stopWork();
         } 
     }   
-    // ATTENTION: DON'T FORGET THE MAIN METHOD. A REAL DAEMON MUST HAVE A MAIN-METHOD!
-    // SHOULD BE STATIC !!!! Here for testing just a non-static method.
-    // This would be the static main method
+    // ATTENTION: DON'T FORGET THE MAIN METHOD. A REAL DAEMON MUST HAVE A STATIC MAIN-METHOD!
+    // This method testDaemon() represents the static main method
     public void testDaemon()
     {
     	//0. Mandatory: Read args of main method here. Here default values will defined by local variables 
