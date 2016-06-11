@@ -26,14 +26,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 
-import string.StringUtils;
 import time.DateTimeUtils;
 import util.logging.Logger;
 
@@ -57,15 +50,12 @@ public abstract class BaseDaemon implements Runnable {
 	public BaseDaemon(String className, String logFileNamePrefix, String runFileName)
     {
         String MN = "constructor";
-        this.CN = className;
-
-        String msg = "Successfully configured logging facilities...";
-        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, msg);             
+        this.CN = className;          
         
         runFile = createRunFile(runFileName);
         if (runFile == null)
         {
-        	msg = "Error while creating runFile!";
+        	String msg = "Error while creating runFile!";
         	Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, msg);              
             System.exit(1);
         }
@@ -98,18 +88,17 @@ public abstract class BaseDaemon implements Runnable {
         start();
        
         runDaemonLoop();
-        
-        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "stop...");
+                
         stop();
+        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "stopped daemon.");
     }
 
     private void runDaemonLoop ()
     {
         String MN = "runDaemonLoop(): ";          
-        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "enter...");        
+        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "start running daemon loop now...");        
         while (runFile.exists())
-        {          
-        	Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, runFile.getName() + " exists? " + runFile.exists());
+        {                  	
             writeTimestamp();         
             try
             {
@@ -120,6 +109,7 @@ public abstract class BaseDaemon implements Runnable {
             	Logger.ctx.log(CN, MN, Logger.LogLevel.ERROR, e.toString());
             }
         }
+        Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "stopping daemon loop now...");
     }
 
     private File createRunFile (String runFileName)
@@ -148,10 +138,8 @@ public abstract class BaseDaemon implements Runnable {
         String MN = "writeTimestamp(): ";        
         try(BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter(runFile)))        
         {
-        	//Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, DateTimeUtils.getCurrentDateTimeAsString());
-            //bufferedWriter.write(DateTimeUtils.getCurrentDateTimeAsString());
-        	//bufferedWriter.write("something to write into the runfile");
-        	bufferedWriter.append("something to write into the runfile");
+        	String timestamp = DateTimeUtils.getCurrentDateTimeAsString();        	
+            bufferedWriter.write(timestamp);        	
         }
         catch (IOException e)
         {
