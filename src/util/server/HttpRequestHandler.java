@@ -39,7 +39,6 @@ package util.server;
 import java.io.IOException;
 
 import util.logging.Logger;
-import util.server.test.SimpleServerTest;
 
 public class HttpRequestHandler extends ClientSocketThread {
 

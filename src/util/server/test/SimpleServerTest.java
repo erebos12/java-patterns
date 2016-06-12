@@ -132,8 +132,7 @@ public class SimpleServerTest extends TestCase {
 
     public void testInvalidPort ()
     {
-        int invalidPort = 0;
-        int threadPoolSize = 20;
+        int invalidPort = 0;        
         IllegalArgumentException ex = null;
         try
         {
