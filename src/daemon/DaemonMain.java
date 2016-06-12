@@ -48,6 +48,7 @@ public class DaemonMain {
 	}
 
 	public DaemonMain() {
+		
 		// 0. Mandatory: Read args of main method here. Here default values will
 		// defined by local variables
 		// You could read them from console or config file as config parameters
@@ -63,10 +64,13 @@ public class DaemonMain {
 	}
 
 	public static void main(String[] args) {
+		String CN = DaemonMain.class.getName();
+		String MN = "main()";
 		DaemonMain daemonMain = new DaemonMain();
 		try {
 			// Wait 5 secs and then delete the run file
 			// what causes stopping the daemon
+			Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "Waiting got 5 secs...");
 			Thread.sleep(5000);
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
@@ -75,6 +79,7 @@ public class DaemonMain {
 		File runFile = new File(runFileName);
 		if (runFile.exists())
 		{
+			Logger.ctx.log(CN, MN, Logger.LogLevel.INFO, "Deleting runfile now...");
 			runFile.delete();
 		}
 	}
