@@ -7,45 +7,6 @@ import util.logging.Logger;
 public class DaemonMain {
 
 	public static String runFileName = null;
-	public class WorkerClass {
-		
-		private String CN = WorkerClass.class.getName();
-		/*
-		 * This class is the real worker class. Here the actual business logic
-		 * should be implemented. Separate class to be more testable as JUnit
-		 * test.
-		 */
-		public void startWork() {
-			Logger.ctx.log(CN, "startWork", Logger.LogLevel.INFO, "doing something here...");
-		}
-
-		public void stopWork() {
-			Logger.ctx.log(CN, "stopWork", Logger.LogLevel.INFO, "stopping my work here...");
-		}
-	}
-
-	public class DaemonXY extends BaseDaemon {
-		private WorkerClass worker = null;
-
-		public DaemonXY(String logFileName, String runFileName) {
-			super(DaemonXY.class.getName(), logFileName, runFileName);
-		}
-
-		@Override
-		public void initialize() {
-			worker = new WorkerClass();
-		}
-
-		@Override
-		public void start() {
-			worker.startWork();
-		}
-
-		@Override
-		public void stop() {
-			worker.stopWork();
-		}
-	}
 
 	public DaemonMain() {
 		
@@ -54,13 +15,20 @@ public class DaemonMain {
 		// You could read them from console or config file as config parameters
 		String LOG_FILE_NAME_PREFIX = "daemonXY";
 		runFileName = "daemonXY_localhost_8080.run";
-		// 1. Mandatory: Construct the daemon
-		DaemonXY daemonXY = new DaemonXY(LOG_FILE_NAME_PREFIX, runFileName);
-		// 2. Optional: Setting another runtimeIntervalInMsec e.g. 1000 or 3000
-		// Default is 500 ms in case you don't call this setter
-		daemonXY.setRunFileIntervalInMsec(1000);
-		// 3. Mandatory: NOW START THE DAEMON
-		daemonXY.startMeAsDaemon();
+		String daemonToConstruct = "MyDaemon";
+		try {
+			// 1. Mandatory: Construct the daemon
+			BaseDaemon daemon = DaemonFactory.createDaemon(daemonToConstruct, LOG_FILE_NAME_PREFIX, runFileName);
+			// 2. Optional: Setting another runtimeIntervalInMsec e.g. 1000 or 3000
+			// Default is 500 ms in case you don't call this setter
+			daemon.setRunFileIntervalInMsec(1000);
+			// 3. Mandatory: NOW START THE DAEMON
+			daemon.startMeAsDaemon();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 
 	public static void main(String[] args) {
