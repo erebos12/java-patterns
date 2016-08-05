@@ -1,25 +1,3 @@
-/*
- * FILE NAME: DaemonSuperClass.java
- *
- * DESCRIPTION:
- *
- *
- *
- * COPYRIGHT:
- *   (C) Copyright International Business Machines Corporation 1997, 2014.
- *   Licensed Material - Property of IBM - All Rights Reserved.
- *
- * CLASSIFICATION:
- *   IBM Confidential
- *
- * COMPONENT:
- *   IBM ADMIRA
- *
- * CHANGES:
- *
- *  $XX Mar 31, 2014 initial version (michael).
- */
-
 package daemon;
 
 import java.io.BufferedWriter;

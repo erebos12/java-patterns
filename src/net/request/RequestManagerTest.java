@@ -118,8 +118,7 @@ public class RequestManagerTest extends TestCase {
         int retryCount = 0;
         int retryTime = 0;
         RequestManager rm = new RequestManager(retryCount, retryTime);
-        JobRequest jr = new JobRequest(4);
-        Exception ex = null;
+        JobRequest jr = new JobRequest(4);        
         try
         {
             rm.handleRequest(jr);
@@ -132,13 +131,9 @@ public class RequestManagerTest extends TestCase {
         }
         catch (Exception e)
         {
-            ex = e;
-        }
-        if (ex != null)
-        {
-            TestHelper.failTestWithErrorMsg(CN, MN,
-                                            "Excpetion was not expected but received: "
-                                                + ex.toString());
-        }
+        	TestHelper.failTestWithErrorMsg(CN, MN,
+                    "Excpetion was not expected but received: "
+                        + e.toString());
+        }       
     }
 }

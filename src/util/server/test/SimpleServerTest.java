@@ -174,4 +174,5 @@ public class SimpleServerTest extends TestCase {
         }
         assertTrue(ex != null);
     }
+
 }
