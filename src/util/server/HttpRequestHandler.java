@@ -42,7 +42,7 @@ import util.logging.Logger;
 
 public class HttpRequestHandler extends ClientSocketThread {
 
-    public static String httpMessage = "";
+    public String httpMessage = "";
     private String CN = HttpRequestHandler.class.getSimpleName();
 
     @Override
@@ -60,7 +60,7 @@ public class HttpRequestHandler extends ClientSocketThread {
             String header = "";
             int contentLength = 0;
             String inputLine;
-            while (!(inputLine = inputBuffer.readLine()).equals(""))
+            while ((inputBuffer.readLine() != null) && !(inputLine = inputBuffer.readLine()).isEmpty())
             {
                 if (inputLine.startsWith("Content-Length"))
                 {

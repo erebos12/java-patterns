@@ -9,12 +9,12 @@ import util.logging.Logger;
 
 public class SimpleServer implements Runnable {
 
-    private ThreadManager threadMgr = new ThreadManager();
-    private int port = 0;
+    final private ThreadManager threadMgr = new ThreadManager();
+    final private int port;
     private ServerSocket serverSocket = null;
     private String handlerClassName = null;
     private boolean isActive = false;
-    private String CN = SimpleServer.class.getName();
+    final private String classname = SimpleServer.class.getName();
     private boolean serverStopped = false;
     private Thread ownThread = null;   
     public enum Status {
@@ -72,7 +72,6 @@ public class SimpleServer implements Runnable {
         {
             threadMgr.constructGenericThreadPool(threadPoolSize,
                                                  Thread.currentThread());
-            ownThread.start();
         }
         catch (Exception e)
         {
@@ -82,24 +81,29 @@ public class SimpleServer implements Runnable {
                            + e.toString());
         }       
     }
+    
+	public void start() 
+	{
+		ownThread.start();
+	}
 
-    private void logMessage (Logger.LogLevel logLevel, String methodName, String msg)
+    private void logMessage (final Logger.LogLevel logLevel, final String methodName, final String msg)
     {
-    	 Logger.ctx.log(CN, methodName, logLevel, msg);
+    	 Logger.ctx.log(classname, methodName, logLevel, msg);
     }
 
     /**
      * Use to stop SimpleServer.
      * @throws Exception 
      */
-    public void stop () throws Exception
+    public void stop () throws IOException
     {
-        String MN = "stop()";
-        logMessage(Logger.LogLevel.INFO, MN, "stopping SimpleServer now...");         
+        String mn = "stop()";
+        logMessage(Logger.LogLevel.INFO, mn, "stopping SimpleServer now...");         
         this.closeSocket();
         this.serverStopped = true;
         threadMgr.shutdownAllThreads(); 
-        logMessage(Logger.LogLevel.INFO, MN, "SimpleServer stopped successfully.");  
+        logMessage(Logger.LogLevel.INFO, mn, "SimpleServer stopped successfully.");  
     }
 
     public boolean getIsActive ()
@@ -111,7 +115,7 @@ public class SimpleServer implements Runnable {
             {
                 if (this.isActive)
                 {
-                    return true;
+                    break;
                 }
                 Thread.sleep(250);
                 retry += 1;
@@ -120,10 +124,10 @@ public class SimpleServer implements Runnable {
             {
             }
         }
-        return false;
+        return isActive;
     }
     
-    public boolean serverIsStopped ()
+    public boolean isStopped ()
     {
         int retry = 0;
         while (retry < 20)
@@ -159,22 +163,11 @@ public class SimpleServer implements Runnable {
         status = newStatus;
     }
 
-    private void closeSocket () throws Exception
+    private void closeSocket () throws IOException
     {
-        String MN = "closeSocket()";
-        if (serverSocket != null)
-        {
-            try
-            {
-                serverSocket.close();
-            }
-            catch (IOException e)
-            {
-                logMessage(Logger.LogLevel.ERROR, MN, e.toString());
-                Exception ex = new Exception(e.toString());
-                throw ex;
-            }
-        }
+		if (serverSocket != null) {
+			serverSocket.close();
+		}
     }
     
     @Override
@@ -212,12 +205,11 @@ public class SimpleServer implements Runnable {
                 catch (IllegalAccessException | InstantiationException | ClassNotFoundException e)
                 {
                     logMessage(Logger.LogLevel.ERROR, MN, e.toString());
-                    Exception ex = new Exception(e.toString());
                     try {
-						throw ex;
-					} catch (Exception e1) {
+						throw e;
+					} catch (ReflectiveOperationException e1) {
 						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						logMessage(Logger.LogLevel.ERROR, MN, e1.toString()); 
 					}
                 }     
             }          

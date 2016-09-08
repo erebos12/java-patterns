@@ -18,7 +18,7 @@ public class TestClientSocketThread extends ClientSocketThread {
         try
         {
             message = inputBuffer.readLine();
-            if (message.startsWith("REQUEST"))
+            if (message != null && message.startsWith("REQUEST"))
             {                
                 outputWriter.write("RESPONSE\n");
                 outputWriter.flush();

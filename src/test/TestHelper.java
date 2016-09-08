@@ -75,6 +75,7 @@ public class TestHelper extends TestCase {
         try
         {            
             simpleServer = new SimpleServer(port, threadPoolSize, simpleSeverHandler);
+            simpleServer.start();
             if (!simpleServer.getIsActive())
             {
                 String errMsg = "Could not start SimpleServer on port: " + port;

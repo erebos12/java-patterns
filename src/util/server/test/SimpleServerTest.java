@@ -72,12 +72,15 @@ public class SimpleServerTest extends TestCase {
         }
         finally
         {
-            server.stop();
+        	if (server != null)
+			{
+				server.stop();
+			}
         }
-        if (!server.serverIsStopped())
+        if (server != null && !server.isStopped())
         {
             TestHelper.failTestWithErrorMsg(CN, MN,
-                                            "SimpleServer must be inactive");
+                                            "SimpleServer must be inactive/stopped here!");
         }
     }
 
@@ -104,6 +107,7 @@ public class SimpleServerTest extends TestCase {
         try
         {
             SimpleServer server = new SimpleServer(port, threadPoolSize, "");
+            server.start();
         }
         catch (IllegalArgumentException e)
         {
@@ -118,6 +122,7 @@ public class SimpleServerTest extends TestCase {
         try
         {
             SimpleServer server = new SimpleServer(port, threadPoolSize, null);
+            server.start();
         }
         catch (IllegalArgumentException e)
         {
@@ -140,6 +145,7 @@ public class SimpleServerTest extends TestCase {
                                                    invalidPort,
                                                    0,
                                                    TestClientSocketThread.class.getName());
+            server.start();
         }
         catch (IllegalArgumentException e)
         {
@@ -163,6 +169,7 @@ public class SimpleServerTest extends TestCase {
                                                    port,
                                                    invalidThreadPoolSize,
                                                    TestClientSocketThread.class.getName());
+            server.start();
         }
         catch (IllegalArgumentException e)
         {
